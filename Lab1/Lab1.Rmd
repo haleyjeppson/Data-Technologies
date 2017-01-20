@@ -19,6 +19,16 @@ library(viridis)
 ## Question 1
 The last word on page 21 is "May"
 
+
+VINNY's problems: 
+
+While trying to compile H. Wickham's Advanced R book I run into the following issue:
+
+"grep: Inconsolata.log: No such file or directory
+mktextfm: mf-nowin -progname=mf \mode:=ljfour; mag:=1; nonstopmode; input Inconsolata' failed to make Inconsolata.tfm."
+
+I am using a mac and I believe that the problem is a font does not naturally exist on my computer. Certain pieces of the book were created though (including the dedictaion and copyright section). I have downloaded the Inconsolata file but am stuck figuring out how to move it to the Font directory in my library. So my question is two fold: 1) Am I on the right track? 2) How do I move a file around on a mac? Thank you!
+
 ## Question 2
 
 #### Retrieving the Data
