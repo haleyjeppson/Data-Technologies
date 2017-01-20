@@ -20,7 +20,7 @@ library(viridis)
 The last word on page 21 is "May"
 
 
-VINNY's problems: 
+**VINNY's problems:**
 
 While trying to compile H. Wickham's Advanced R book I run into the following issue:
 
@@ -28,6 +28,19 @@ While trying to compile H. Wickham's Advanced R book I run into the following is
 mktextfm: mf-nowin -progname=mf \mode:=ljfour; mag:=1; nonstopmode; input Inconsolata' failed to make Inconsolata.tfm."
 
 I am using a mac and I believe that the problem is a font does not naturally exist on my computer. Certain pieces of the book were created though (including the dedictaion and copyright section). I have downloaded the Inconsolata file but am stuck figuring out how to move it to the Font directory in my library. So my question is two fold: 1) Am I on the right track? 2) How do I move a file around on a mac? Thank you!
+
+**Ashish's Problems and Solutions:**
+
+I also faced the same problem while knitting the H. Wickham's Advanced R book. The book is using the "Inconsolata" font which is not a default font in mac. So in order to debug it, I googled it.
+
+**"Whenever in trouble use GOOGLE"**
+
+While searching through the internet we found the solution. First, we downloaded the Inconsolota font from [link](https://cooltext.com/Download-Font-Inconsolata). After that, we followed [these](http://superuser.com/questions/56787/how-to-install-and-find-fonts-for-mac-os-x) instructions and copied the font file into the following folders.
+
+* /Library/Fonts/
+* /Users/username/Library/Fonts
+
+Thank you Haley and Vinny for your help!!
 
 ## Question 2
 
