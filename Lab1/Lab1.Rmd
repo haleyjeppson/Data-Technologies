@@ -13,7 +13,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Question 1: Book
+
+***
+
+
+## Question 1: Building a Book
 
 
 #### VINNY's problems:
@@ -44,11 +48,15 @@ Thank you Haley and Vinny for your help!!
 
 I encountered the same issues as Vinny and Ashish did when attempting to knit Advanced R. Ashish was able to troubleshoot and realize that we were not able to get the book to knit because we were all missing the "Inconsolata" font. I was fortunate to not be a mac user at this moment. In order to install the font on a Ubuntu platform, I simply had to run the code `sudo apt-get install fonts-inconsolata` in the terminal (thanks stackoverflow!). After doing so, I was able to compile the pdf and discover that the last word on page 21 is "May".
 
+
+***
+
+
 ## Question 2: Weather Stations
 
 #### Retrieving the Data
 
-The function `tmax` takes the argument `stationid` in the form of six digits, reads in the corresponding file, and cleans it.
+The function `tmax` takes the argument `stationid` in the form of six digits, reads in the corresponding file, and cleans the tibble before returning it.
 
 
 ```{r}
@@ -79,6 +87,8 @@ temps$Temp_Max <- replace(temps$Temp_Max,
 # Reformat temps and create a variable for year and month.
 temps$Temp_Max <- temps$Temp_Max/100
 temps$YearMonth <- temps$Year+temps$Month/12
+
+# Return cleaned tibble
 temps
 }
 
@@ -87,6 +97,8 @@ data <- tmax("041758")
 head(data)
 
 ```
+
+
 
 #### Visualizing the temperature records over time
 
