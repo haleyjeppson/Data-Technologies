@@ -11,25 +11,23 @@ knitr::opts_chunk$set(
 	message = FALSE,
 	warning = FALSE
 )
-library(tidyverse)
-library(viridis)
-
 ```
 
-## Question 1
-The last word on page 21 is "May"
+## Question 1: Book
 
 
-**VINNY's problems:**
+#### VINNY's problems:
 
 While trying to compile H. Wickham's Advanced R book I run into the following issue:
 
-"grep: Inconsolata.log: No such file or directory
-mktextfm: mf-nowin -progname=mf \mode:=ljfour; mag:=1; nonstopmode; input Inconsolata' failed to make Inconsolata.tfm."
+`grep: Inconsolata.log: No such file or directory
+mktextfm: mf-nowin -progname=mf \mode:=ljfour; mag:=1; nonstopmode;  `
+`input Inconsolata' failed to make Inconsolata.tfm.`
 
 I am using a mac and I believe that the problem is a font does not naturally exist on my computer. Certain pieces of the book were created though (including the dedictaion and copyright section). I have downloaded the Inconsolata file but am stuck figuring out how to move it to the Font directory in my library. So my question is two fold: 1) Am I on the right track? 2) How do I move a file around on a mac? Thank you!
 
-**Ashish's Problems and Solutions:**
+
+#### Ashish's Problems and Solutions:
 
 I also faced the same problem while knitting the H. Wickham's Advanced R book. The book is using the "Inconsolata" font which is not a default font in mac. So in order to debug it, I googled it.
 
@@ -42,59 +40,80 @@ While searching through the internet we found the solution. First, we downloaded
 
 Thank you Haley and Vinny for your help!!
 
-## Question 2
+#### Haley's Problems and Solutions:
+
+I encountered the same issues as Vinny and Ashish did when attempting to knit Advanced R. Ashish was able to troubleshoot and realize that we were not able to get the book to knit because we were all missing the "Inconsolata" font. I was fortunate to not be a mac user at this moment. In order to install the font on a Ubuntu platform, I simply had to run the code `sudo apt-get install fonts-inconsolata` in the terminal (thanks stackoverflow!). After doing so, I was able to compile the pdf and discover that the last word on page 21 is "May".
+
+## Question 2: Weather Stations
 
 #### Retrieving the Data
 
+The function `tmax` takes the argument `stationid` in the form of six digits, reads in the corresponding file, and cleans it.
 
 
 ```{r}
-
+library(tidyverse)
 
 tmax <- function(stationid){
-  station <- paste("ushcn.v2.5.5.20170118/", stationid, ".raw.tmax", sep="")
+  # paste together file name
+  station <- paste("ushcn.v2.5.5.20170118/USH00", stationid, ".raw.tmax", sep="")
+  # read in the file
   temps <- read_fwf(station, 
                    col_positions=  fwf_positions(
                      start=c( 1,13, rep(16+9*0:11, each=4) + c(1,7,8,9)), 
                      end  =c(11,16, rep(16+9*0:11, each=4) + c(6,7,8,9))))
   
+  # rename the column names
 names(temps) <- c("Station", "Year", 
                  paste0(rep(c("Value","DMflag", "QCflag", "DSflag"), 12), 
                         rep(1:12, each=4)))
 
+# Now to tidy the data a little
+# First, gather all columns that start with "Value" and create a new column for Month based on number that follows "value"
 temps <- temps %>% 
   gather(key="Month", value="Temp_Max", starts_with("Value"))
 temps$Month <- as.numeric(gsub("Value", "", temps$Month))
+# replace the -9999 temperature values with NAs
 temps$Temp_Max <- replace(temps$Temp_Max, 
                           temps$Temp_Max == -9999, NA)
+# Reformat temps and create a variable for year and month.
 temps$Temp_Max <- temps$Temp_Max/100
 temps$YearMonth <- temps$Year+temps$Month/12
 temps
 }
 
-data <- tmax("USH00011084")
+data <- tmax("041758")
 
 head(data)
 
 ```
 
-#### Visualizing the Data
+#### Visualizing the temperature records over time
 
+The plots below display data from station 041758 in Chula Vista, California.
 
-```{r pressure, echo=FALSE}
+```{r temps1}
 
-data %>% ggplot(aes(x = YearMonth, Temp_Max, colour= Temp_Max)) + 
-  geom_point()  +
-  scale_color_viridis(option="B")
-
-data %>% ggplot(aes(x = Year, Temp_Max, colour=Temp_Max)) + 
-  geom_point() + facet_wrap(~Month, nrow=2) +
-  scale_color_viridis(option="B")
-
-
-data %>% ggplot(aes(x = Month, Temp_Max, colour=Year)) + 
-  geom_point() +geom_jitter(width = 0.34)+
-  scale_color_viridis(option="B")
+data %>% ggplot(aes(x = Month, Temp_Max, color= Year)) + 
+  geom_path(aes(group= Year), size=.7, alpha=.6) +
+  scale_color_gradient(low="steelblue1", high="firebrick1") +
+  labs(y="Max temp (Celsius)", title = "Monthly max temperatures") 
 ```
 
+
+
+Description:
+
+```{r temps2}
+data %>%  group_by(Year) %>%
+  mutate(MeanMaxTemp = mean(Temp_Max)) %>%
+  ggplot(aes(x=Year, MeanMaxTemp)) + 
+  geom_point(aes(color=MeanMaxTemp)) +
+  labs(y="Mean max temp (Celsius)", title = "Yearly mean max temperatures") +
+  scale_color_gradient(low="steelblue1", high="firebrick1")
+
+```
+
+
+Description:
 
