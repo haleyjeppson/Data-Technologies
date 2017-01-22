@@ -64,7 +64,7 @@ library(tidyverse)
 
 tmax <- function(stationid){
   # paste together file name
-  station <- paste("ushcn.v2.5.5.20170118/USH00", stationid, ".raw.tmax", sep="")
+  station <- paste("https://raw.githubusercontent.com/haleyjeppson/Data-Technologies/master/Lab1/ushcn.v2.5.5.20170118/USH00", stationid, ".raw.tmax", sep="")
   # read in the file
   temps <- read_fwf(station, 
                    col_positions=  fwf_positions(
