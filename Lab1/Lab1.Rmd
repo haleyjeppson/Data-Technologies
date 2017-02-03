@@ -118,6 +118,8 @@ vista %>% ggplot(aes(x = Month, Temp_Max, color= Year)) +
   geom_path(aes(group= Year), size=.7, alpha=.6) +
   scale_color_gradient(low="steelblue1", high="firebrick1") +
   labs(y="Max temp (Celsius)", title = "Monthly max temperatures") 
+
+
 ```
 
 
@@ -126,6 +128,7 @@ In this plot we can see a clear trend of warmer temperatures in the more recent 
 This next plot makes the trend seen in the first plot a little more clear by removing the seasonal trends. Here we have taken the mean maximum temperature for each year and plotted it. 
 
 ```{r temps2}
+
 vista %>%  group_by(Year) %>%
   mutate(MeanMaxTemp = mean(Temp_Max)) %>%
   ggplot(aes(x=Year, MeanMaxTemp)) + 
