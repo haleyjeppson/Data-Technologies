@@ -28,7 +28,7 @@ While trying to compile H. Wickham's Advanced R book I run into the following is
 mktextfm: mf-nowin -progname=mf \mode:=ljfour; mag:=1; nonstopmode;  `
 `input Inconsolata' failed to make Inconsolata.tfm.`
 
-I am using a mac and I believe that the problem is a font does not naturally exist on my computer. Certain pieces of the book were created though (including the dedictaion and copyright section). I have downloaded the Inconsolata file but am stuck figuring out how to move it to the Font directory in my library. So my question is two fold: 1) Am I on the right track? 2) How do I move a file around on a mac? Thank you!
+I am using a mac and I believe that the problem is a font does not naturally exist on my computer. Certain pieces of the book were created though (including the dedication and copyright section). I have downloaded the Inconsolata file but am stuck figuring out how to move it to the Font directory in my library. So my question is two fold: 1) Am I on the right track? 2) How do I move a file around on a mac? Thank you!
 
 
 #### Ashish's Problems and Solutions:
@@ -91,10 +91,16 @@ temps$YearMonth <- temps$Year+temps$Month/12
 # Return cleaned tibble
 temps
 }
+```
 
-data <- tmax("041758")
 
-head(data)
+Using the `tmax` function just created, we can retrieve the data from any station using the six digit station ID. Here we retrieve the data from station 041758 located in Chula Vista, California.
+
+```{r}
+
+vista <- tmax("041758")
+
+head(vista)
 
 ```
 
@@ -102,22 +108,25 @@ head(data)
 
 #### Visualizing the temperature records over time
 
-The plots below display data from station 041758 in Chula Vista, California.
+The plots below use the maximum temperatures recorded at station 041758 in Chula Vista, California between the years 1918 and 2016.  
+
+This first graphic plots the maximum temperature recorded for each month throughout the years. 
 
 ```{r temps1}
 
-data %>% ggplot(aes(x = Month, Temp_Max, color= Year)) + 
+vista %>% ggplot(aes(x = Month, Temp_Max, color= Year)) + 
   geom_path(aes(group= Year), size=.7, alpha=.6) +
   scale_color_gradient(low="steelblue1", high="firebrick1") +
   labs(y="Max temp (Celsius)", title = "Monthly max temperatures") 
 ```
 
 
+In this plot we can see a clear trend of warmer temperatures in the more recent years for every month of the year. 
 
-Description:
+This next plot makes the trend seen in the first plot a little more clear by removing the seasonal trends. Here we have taken the mean maximum temperature for each year and plotted it. 
 
 ```{r temps2}
-data %>%  group_by(Year) %>%
+vista %>%  group_by(Year) %>%
   mutate(MeanMaxTemp = mean(Temp_Max)) %>%
   ggplot(aes(x=Year, MeanMaxTemp)) + 
   geom_point(aes(color=MeanMaxTemp)) +
@@ -126,6 +135,5 @@ data %>%  group_by(Year) %>%
 
 ```
 
-
-Description:
+This plot uncovers what before appeared as a trend now looks like a breakpoint around 1980. It appears as though the yearly mean maximum temperature was much cooler in the years prior to 1980 than most of the years after 1980. This begs the question: What happened in 1980? 
 
