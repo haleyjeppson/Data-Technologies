@@ -21,7 +21,7 @@ Using tools from `dplyr` and `ggplot2` answer the following questions:
 If you feel ambitious, you could try to model this trajectory - but if you do, make sure to detail all assumptions that you make.
 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 
 movies <- read_csv(curl("https://raw.githubusercontent.com/Stat585-at-ISU/materials/master/data/movies.csv"))
 
